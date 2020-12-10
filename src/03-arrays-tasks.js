@@ -569,13 +569,19 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-  console.log(valueSelector);
   const res = new Map();
-  const keys = [...new Set(array.map(keySelector))];
-  keys.map((item) => res.set(item, array.filter((item1) => item1[`${Object.keys(item1)[0]}`] === item).map((item3) => {
-    const b = item3[`${Object.keys(item3)[1]}`];
-    return b;
-  })));
+  const value = array.map(valueSelector);
+  array.map(keySelector).map((item) => {
+    if (!res.has(item)) {
+      res.set(item, array.map((object) => {
+        if (item === Object.values(object)[0]) {
+          return value[value.indexOf(Object.values(object)[1])];
+        }
+        return object;
+      }).filter((string) => typeof string === 'string'));
+    }
+    return item;
+  });
   return res;
 }
 

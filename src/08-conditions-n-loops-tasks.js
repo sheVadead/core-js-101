@@ -131,8 +131,9 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return !(rect2.left > rect1.width || rect2.width < rect1.left
+       || rect2.top > rect1.height || rect2.height < rect1.top);
 }
 
 
@@ -486,8 +487,55 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+const X = 'X';
+const O = '0';
+function evaluateTicTacToePosition(position) {
+  position.forEach((item) => {
+    if (item.length < 3) {
+      item.push(' ');
+    }
+  });
+  const horizontal = [0, 3, 6].map((i) => [i, i + 1, i + 2]);
+  const vertical = [0, 1, 2].map((i) => [i, i + 3, i + 6]);
+  const diagonal = [
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  const allwins = [].concat(horizontal).concat(vertical).concat(diagonal);
+  const xPositions = [];
+  const oPositions = [];
+  position.flat().filter((item, index) => {
+    if (item === X) {
+      xPositions.push(index);
+    } else if (item === O) {
+      oPositions.push(index);
+    }
+    return item;
+  });
+  let winCondition;
+  allwins.forEach((item1) => {
+    let res = 0;
+    xPositions.forEach((item) => {
+      if (item1.includes(item)) {
+        res += 1;
+      }
+    });
+    if (res === 3) {
+      winCondition = X;
+    }
+  });
+  allwins.forEach((item1) => {
+    let res = 0;
+    oPositions.forEach((item) => {
+      if (item1.includes(item)) {
+        res += 1;
+      }
+    });
+    if (res === 3) {
+      winCondition = O;
+    }
+  });
+  return winCondition;
 }
 
 
